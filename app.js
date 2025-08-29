@@ -8,7 +8,7 @@ app.use(express.json());
 require('dotenv').config();
 
 app.use(cors());
-app.use("/uploads", express.static("src/uploads"));
+app.use("/uploads", express.static("uploads"));
 
 mongoURL = process.env.MONGO_URL;
 

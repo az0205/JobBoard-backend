@@ -8,6 +8,7 @@ const createJob = async (req, res) => {
         salary,
         location,
         type } = req.body;
+        
   const recId = req.recruiter.recId;
 
   const recruiter = await Recruiter.findById(recId);
@@ -21,6 +22,7 @@ const createJob = async (req, res) => {
     const newJob = new Job({
         title,
         description,
+        company: recruiter.company,
         salary,
         location,
         type,
@@ -59,6 +61,7 @@ const updateJob = async (req, res) => {
         _id: job._id,
         title: job.title,
         description: job.description,
+        company: job.company,
         salary: job.salary,
         location: job.location,
         type: job.type,
@@ -83,6 +86,7 @@ const deleteJob = async (req, res) => {
 
     const jobId = req.params.id;
     const recId = req.recruiter.recId;
+    const adminId = req.admin.adminId;
 
     const job = await Job.findById(jobId);
     if (!job) {
@@ -93,7 +97,7 @@ const deleteJob = async (req, res) => {
       });
     }
 
-    if (job.recId.toString() !== recId) {
+    if (job.recId.toString() !== recId || !adminId) {
       return res.status(403).json({
         message: "You are not authorized to delete this job.",
         status: "failure",
@@ -111,6 +115,7 @@ const deleteJob = async (req, res) => {
         _id: deletedJob._id,
         title: deletedJob.title,
         description: deletedJob.description,
+        company: deletedJob.company,
         salary: deletedJob.salary,
         location: deletedJob.location,
         type: deletedJob.type,
@@ -121,11 +126,9 @@ const deleteJob = async (req, res) => {
 
 //--------Get all jobs specifically for the recruiter-------
 const getAllRecJobs = async (req, res) => {
-  
-  let jobs;
 
   const recId = req.recruiter.recId;
-  jobs = await Job.find({recId: recId});
+  const jobs = await Job.find({recId: recId});
 
   if(jobs){
 

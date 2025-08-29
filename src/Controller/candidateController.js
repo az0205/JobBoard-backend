@@ -76,7 +76,64 @@ const candidateLogin = async (req, res) => {
   });
 }
 
+//--get all candidates
+const getAllCands = async (req, res) => {
+  
+  const cands = await Candidate.find();
+  if(cands){
+
+  return res.status(200).json({
+    status: "success",
+    message: "listed all candidates",
+    data: cands,
+  });
+}
+else{
+  res.status(404).json({
+        status: "failure",
+        message: "Candidates not found",
+      });
+}
+};
+
+const deleteCandidate = async (req, res) => {
+    const candId = req.params.id;
+    const adminId = req.admin.adminId;
+
+    const candidate = await Candidate.findById(candId);
+    if (!candidate) {
+      return res.status(404).json({
+        message: "Candidate not found.",
+        status: "failure",
+        error: true,
+      });
+    }
+
+    if (!adminId) {
+      return res.status(403).json({
+        message: "You are not authorized to delete this candidate.",
+        status: "failure",
+        error: true,
+      });
+    }
+
+    const deletedCand = await Candidate.findByIdAndDelete(candId);
+
+    return res.status(200).json({
+      message: "Candidate deleted successfully!",
+      status: "success",
+      error: false,
+      task: {
+        _id: deletedCand._id,
+        name: deletedCand.name,
+        email: deletedCand.email
+      },
+    });
+}
+
 module.exports = {
     candidateRegister,
-    candidateLogin
+    candidateLogin,
+    getAllCands, 
+    deleteCandidate
 };

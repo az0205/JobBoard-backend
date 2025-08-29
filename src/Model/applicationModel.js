@@ -32,8 +32,8 @@ const applicationSchema=new mongoose.Schema({
 
   status: {
     type: String,
-    default: "Sent"
-  }
+    default: "Pending"
+  },
 
   })
   const Application=mongoose.model("Application",applicationSchema)

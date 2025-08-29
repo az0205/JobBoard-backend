@@ -65,5 +65,17 @@ module.exports={
             next()
         }
         )
+    },
+
+    tokenVerifyRecruiterOrAdmin:(req, res, next) => {
+        tokenVerifyRecruiter(req, res, (err) => {
+            if (!err) return next(); // recruiter verified
+        tokenVerifyAdmin(req, res, (err2) => {
+            if (!err2) return next(); // admin verified
+            return res.status(403).json({ message: "Access denied" });
+            });
+        });
     }
+
+    
 }
