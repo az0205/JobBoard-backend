@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-module.exports={
-    tokenVerifyRecruiter:(req,res,next)=>{
+    const tokenVerifyRecruiter = (req,res,next)=>{
         const authHeader=req.headers.authorization
         if(!authHeader){
             return res.status(401).json({
@@ -21,9 +20,9 @@ module.exports={
             next()
         }
         )
-    }, 
+    }
 
-    tokenVerifyCandidate:(req,res,next)=>{
+    const tokenVerifyCandidate = (req,res,next)=>{
         const authHeader=req.headers.authorization
         if(!authHeader){
             return res.status(401).json({
@@ -43,9 +42,9 @@ module.exports={
             next()
         }
         )
-    },
+    }
 
-    tokenVerifyAdmin:(req,res,next)=>{
+    const tokenVerifyAdmin = (req,res,next)=>{
         const authHeader=req.headers.authorization
         if(!authHeader){
             return res.status(401).json({
@@ -65,9 +64,9 @@ module.exports={
             next()
         }
         )
-    },
+    }
 
-    tokenVerifyRecruiterOrAdmin:(req, res, next) => {
+    const tokenVerifyRecruiterOrAdmin = (req, res, next) => {
         tokenVerifyRecruiter(req, res, (err) => {
             if (!err) return next(); // recruiter verified
         tokenVerifyAdmin(req, res, (err2) => {
@@ -78,4 +77,9 @@ module.exports={
     }
 
     
+module.exports={
+    tokenVerifyAdmin,
+    tokenVerifyCandidate,
+    tokenVerifyRecruiter,
+    tokenVerifyRecruiterOrAdmin
 }

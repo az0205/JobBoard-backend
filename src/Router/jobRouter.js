@@ -15,6 +15,6 @@ router.route("/recruiter/jobs")
 router.route("/jobs/:id")
 .get(tokenVerifyRecruiter, tryCatch(job.getJob))
 .put(tokenVerifyRecruiter, tryCatch(job.updateJob))
-.delete(tokenVerifyRecruiterOrAdmin, tryCatch(job.deleteJob))
+.delete(tokenVerifyRecruiterOrAdmin,tryCatch(job.deleteJob))
 
 module.exports=router;

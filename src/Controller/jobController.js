@@ -85,8 +85,8 @@ const updateJob = async (req, res) => {
 const deleteJob = async (req, res) => {
 
     const jobId = req.params.id;
-    const recId = req.recruiter.recId;
-    const adminId = req.admin.adminId;
+    const recId = req.recruiter ? req.recruiter.recId : null;
+    const adminId = req.admin ? req.admin.adminId : null;
 
     const job = await Job.findById(jobId);
     if (!job) {
@@ -97,7 +97,7 @@ const deleteJob = async (req, res) => {
       });
     }
 
-    if (job.recId.toString() !== recId || !adminId) {
+    if (job.recId.toString() !== recId && !adminId) {
       return res.status(403).json({
         message: "You are not authorized to delete this job.",
         status: "failure",
